@@ -20,8 +20,14 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap">
 <link rel="stylesheet" href="assets/css/style.css">
+<!-- Marks that JS is available *before* first paint, so the motion layer can
+     hide elements it intends to animate in. Without it, a JS failure would
+     leave the hero permanently invisible. -->
+<script>document.documentElement.className += ' js';</script>
 </head>
 <body>
+
+<div class="progress" id="progress" aria-hidden="true"></div>
 
 <a class="skip" href="#about">跳至主要內容</a>
 
@@ -65,7 +71,7 @@
         <p class="hero__meta hero__meta--r"><span>港式串燒．燒烤．小酒館</span><span>18:00 — 00:00</span></p>
       </div>
 
-      <h1 class="hero__title"><span>酒</span><span>虎</span><span>詩</span><span>龍</span></h1>
+      <h1 class="hero__title"><span><i>酒</i></span><span><i>虎</i></span><span><i>詩</i></span><span><i>龍</i></span></h1>
 
       <div class="hero__bar">
         <p class="hero__en">Dionysus &amp; Loong</p>

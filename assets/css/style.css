@@ -535,9 +535,125 @@ table{ border-collapse:collapse; width:100%; }
 .foot__bar p{ margin:0; font-size:.82rem; letter-spacing:.06em; color:var(--muted); }
 .foot__note{ margin:22px 0 0; font-size:.76rem; line-height:1.9; letter-spacing:.04em; color:var(--faint); }
 
-/* ── reveal ────────────────────────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════════════════════
+   MOTION
+   Everything here is gated on .js so a script failure can never leave content
+   hidden, and the whole layer is switched off under prefers-reduced-motion.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* scroll progress — a hairline of brass across the top */
+.progress{
+  position:fixed; inset:0 0 auto; z-index:900;
+  height:2px; background:var(--brass);
+  transform:scaleX(0); transform-origin:0 50%;
+  will-change:transform;
+}
+
+/* ── hero entrance ─────────────────────────────────────────────────────── */
+.hero__title span{
+  display:block; overflow:hidden;
+  padding-block:.08em; margin-block:-.08em;   /* slack so tall glyphs are not clipped */
+}
+.hero__title i{ display:block; font-style:normal; }
+
+.js .hero__title i{ transform:translateY(108%); }
+.js .hero__top,
+.js .hero__bar,
+.js .canvas--front{ opacity:0; transform:translateY(20px); }
+.js .hero__top{ transform:translateY(-14px); }
+
+.js.is-ready .hero__title i{
+  transform:none;
+  transition:transform 1.15s cubic-bezier(.16,.84,.28,1);
+}
+.js.is-ready .hero__title span:nth-child(1) i{ transition-delay:.06s; }
+.js.is-ready .hero__title span:nth-child(2) i{ transition-delay:.15s; }
+.js.is-ready .hero__title span:nth-child(3) i{ transition-delay:.24s; }
+.js.is-ready .hero__title span:nth-child(4) i{ transition-delay:.33s; }
+
+.js.is-ready .hero__top,
+.js.is-ready .hero__bar,
+.js.is-ready .canvas--front{
+  opacity:1; transform:none;
+  transition:opacity .9s var(--ease), transform .9s var(--ease);
+}
+.js.is-ready .hero__top{ transition-delay:.05s; }
+.js.is-ready .hero__bar{ transition-delay:.5s; }
+.js.is-ready .canvas--front{ transition-delay:.62s; }
+
+/* the room lights come on a beat after the facade lands */
+.js .storefront__doors .is-lit{ filter:brightness(.72) saturate(.7); }
+.js.is-ready .storefront__doors .is-lit{
+  filter:none; transition:filter 1.4s ease 1.25s;
+}
+.js .storefront__roundel{ opacity:0; transform:translate(-50%,-50%) scale(.82); }
+.js.is-ready .storefront__roundel{
+  opacity:1; transform:translate(-50%,-50%) scale(1);
+  transition:opacity .7s var(--ease) 1.15s, transform .7s cubic-bezier(.2,1.3,.4,1) 1.15s;
+}
+
+/* ── scroll reveal ─────────────────────────────────────────────────────── */
 .reveal{ opacity:0; transform:translateY(24px); transition:opacity .85s var(--ease), transform .85s var(--ease); }
 .reveal.in{ opacity:1; transform:none; }
+
+/* section headings wipe down instead of merely fading */
+.reveal .h2{
+  clip-path:inset(0 0 104% 0);
+  transition:clip-path 1s cubic-bezier(.16,.84,.28,1) .1s;
+}
+.reveal.in .h2{ clip-path:inset(0 0 -4% 0); }
+
+/* the kicker's rule draws itself left to right */
+.reveal.kicker,
+.reveal .kicker{ position:relative; border-bottom-color:transparent; }
+.reveal.kicker::after,
+.reveal .kicker::after{
+  content:""; position:absolute; left:0; right:0; bottom:-1px; height:1px;
+  background:var(--line); transform:scaleX(0); transform-origin:0 50%;
+  transition:transform .95s var(--ease) .12s;
+}
+.kicker--inv.reveal::after,
+.reveal .kicker--inv::after{ background:var(--line-inv); }
+.reveal.in.kicker::after,
+.reveal.in .kicker::after{ transform:scaleX(1); }
+.cta .kicker::after{ display:none; }   /* that one carries no rule to draw */
+
+/* children stagger in; the class is stripped once played so hover stays snappy */
+.stagger{
+  opacity:0; transform:translateY(16px);
+  transition-property:opacity, transform;
+  transition-duration:.7s, .7s;
+  transition-timing-function:var(--ease);
+  transition-delay:calc(var(--i, 0) * 55ms), calc(var(--i, 0) * 55ms);
+}
+.in .stagger,
+.stagger.in{ opacity:1; transform:none; }
+
+/* ── micro-interactions ────────────────────────────────────────────────── */
+.marquee:hover .marquee__track{ animation-play-state:paused; }
+
+.row__price{ transition:transform .35s var(--ease); }
+.row:hover .row__price{ transform:translateX(-4px); }
+.row__main{ transition:transform .35s var(--ease); }
+.row:hover .row__main{ transform:translateX(4px); }
+
+/* facade drifts a touch slower than the page */
+.storefront{ will-change:transform; }
+
+@media (prefers-reduced-motion:reduce){
+  .progress{ display:none; }
+  .js .hero__title i,
+  .js .hero__top,
+  .js .hero__bar,
+  .js .canvas--front,
+  .js .storefront__roundel{ opacity:1 !important; transform:none !important; }
+  .js .storefront__doors .is-lit{ filter:none !important; }
+  .js .storefront__roundel{ transform:translate(-50%,-50%) !important; }
+  .reveal .h2{ clip-path:none !important; }
+  .reveal.kicker::after,
+  .reveal .kicker::after{ transform:scaleX(1) !important; }
+  .stagger{ opacity:1 !important; transform:none !important; }
+}
 
 /* ── responsive ────────────────────────────────────────────────────────── */
 @media (max-width:1080px){

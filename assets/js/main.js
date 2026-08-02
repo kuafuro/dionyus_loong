@@ -2,21 +2,21 @@
 (function () {
   'use strict';
 
+  var root = document.documentElement;
   var nav = document.getElementById('nav');
   var burger = document.getElementById('burger');
   var panel = document.getElementById('menu-panel');
+  var progress = document.getElementById('progress');
 
-  /* ── sticky header ─────────────────────────────────────────────────── */
-  var stuck = false;
-  function onScroll() {
-    var should = window.scrollY > 40;
-    if (should !== stuck) {
-      stuck = should;
-      nav.classList.toggle('is-stuck', stuck);
-    }
-  }
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
+  var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var hasIO = 'IntersectionObserver' in window;
+
+  /* ── hero entrance ─────────────────────────────────────────────────────
+     Fires once the first paint is done, so the staggered reveal is actually
+     seen rather than racing the initial render.                            */
+  function start() { requestAnimationFrame(function () { root.classList.add('is-ready'); }); }
+  if (document.readyState === 'complete') start();
+  else window.addEventListener('load', start);
 
   /* ── mobile menu ───────────────────────────────────────────────────── */
   function closeMenu() {
@@ -37,9 +37,7 @@
     }
   });
 
-  panel.addEventListener('click', function (e) {
-    if (e.target.closest('a')) closeMenu();
-  });
+  panel.addEventListener('click', function (e) { if (e.target.closest('a')) closeMenu(); });
 
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && burger.getAttribute('aria-expanded') === 'true') {
@@ -48,23 +46,51 @@
     }
   });
 
-  /* ── reveal on scroll ──────────────────────────────────────────────── */
-  var SELECTOR = [
+  /* ── scroll reveal + child stagger ─────────────────────────────────── */
+  var REVEAL = [
     '.sec .kicker', '.split', '.stats', '.course',
     '.secret', '.note', '.tiles', '.cards', '.inline-cta',
-    '.merch__item', '.info', '.cta__in', '.canvas--front', '.foot__top'
+    '.merch__item', '.drop', '.info', '.cta__in', '.foot__top'
   ].join(',');
 
-  var targets = document.querySelectorAll(SELECTOR);
-  Array.prototype.forEach.call(targets, function (el) { el.classList.add('reveal'); });
+  var STAGGER = [
+    '.stats > li', '.list > .row', '.tiles > .tile', '.cards > .card',
+    '.info > .info__card', '.tags > span', '.ticks > li'
+  ].join(',');
 
-  if (!('IntersectionObserver' in window)) {
-    Array.prototype.forEach.call(targets, function (el) { el.classList.add('in'); });
+  var targets = document.querySelectorAll(REVEAL);
+
+  Array.prototype.forEach.call(targets, function (el) {
+    el.classList.add('reveal');
+    if (calm) return;
+    Array.prototype.forEach.call(el.querySelectorAll(STAGGER), function (kid, i) {
+      kid.classList.add('stagger');
+      kid.style.setProperty('--i', i);
+    });
+  });
+
+  function play(el) {
+    el.classList.add('in');
+    // Drop the stagger class once it has run: it owns transition-delay, which
+    // would otherwise lag every subsequent hover on the same element.
+    var kids = el.querySelectorAll('.stagger');
+    if (!kids.length) return;
+    var last = 700 + (kids.length - 1) * 55 + 120;
+    setTimeout(function () {
+      Array.prototype.forEach.call(kids, function (kid) {
+        kid.classList.remove('stagger');
+        kid.style.removeProperty('--i');
+      });
+    }, last);
+  }
+
+  if (!hasIO) {
+    Array.prototype.forEach.call(targets, play);
   } else {
     var revealer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
-          entry.target.classList.add('in');
+          play(entry.target);
           revealer.unobserve(entry.target);
         }
       });
@@ -80,7 +106,7 @@
     links[a.getAttribute('href').slice(1)] = a;
   });
 
-  if ('IntersectionObserver' in window && sections.length) {
+  if (hasIO && sections.length) {
     var spy = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         var link = links[entry.target.id];
@@ -93,6 +119,48 @@
 
     Array.prototype.forEach.call(sections, function (s) { spy.observe(s); });
   }
+
+  /* ── one rAF loop for everything scroll-driven ─────────────────────── */
+  var facade = document.querySelector('.storefront');
+  var ticking = false;
+  var stuck = false;
+
+  function frame() {
+    ticking = false;
+    var y = window.scrollY || window.pageYOffset;
+
+    var should = y > 40;
+    if (should !== stuck) {
+      stuck = should;
+      nav.classList.toggle('is-stuck', stuck);
+    }
+
+    if (calm) return;
+
+    if (progress) {
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      progress.style.transform = 'scaleX(' + (max > 0 ? Math.min(y / max, 1) : 0) + ')';
+    }
+
+    // Facade drifts against the scroll, measured from the viewport centre so it
+    // sits at zero offset when centred, and clamped so it never breaks the grid.
+    if (facade) {
+      var box = facade.getBoundingClientRect();
+      if (box.bottom > -200 && box.top < window.innerHeight + 200) {
+        var rel = (box.top + box.height / 2 - window.innerHeight / 2) / window.innerHeight;
+        var shift = Math.max(-18, Math.min(18, rel * -18));
+        facade.style.transform = 'translateY(' + shift.toFixed(2) + 'px)';
+      }
+    }
+  }
+
+  function onScroll() {
+    if (!ticking) { ticking = true; requestAnimationFrame(frame); }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+  frame();
 
   /* ── footer year ───────────────────────────────────────────────────── */
   var yr = document.getElementById('yr');
