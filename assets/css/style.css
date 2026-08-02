@@ -439,6 +439,30 @@ table{ border-collapse:collapse; width:100%; }
 .merch__price{ margin-bottom:1em; font-family:var(--latin); font-size:1.28rem; letter-spacing:.08em; color:var(--door); }
 .merch__price span{ font-family:var(--serif); font-size:.86rem; letter-spacing:.1em; color:var(--muted); }
 
+/* next drop teaser */
+.drop{
+  display:grid; grid-template-columns:auto minmax(0,1fr); align-items:center;
+  gap:clamp(24px,4vw,52px); margin-top:2px;
+  padding:clamp(28px,3.6vw,46px) clamp(26px,3.4vw,44px);
+  background-color:var(--door-dk);
+  background-image:var(--speckle); background-size:200px 200px;
+  color:var(--paper);
+}
+.drop__mark{
+  display:flex; gap:4px;
+  width:clamp(92px,13vw,140px); aspect-ratio:1;
+  align-items:center; justify-content:center;
+  border:1px solid var(--line-inv); border-radius:50%;
+}
+.drop__mark span{ font-size:clamp(1.5rem,3.4vw,2.3rem); font-weight:900; color:var(--brass-lt); }
+.drop__mark span:last-child{ color:rgba(233,237,228,.55); }
+.drop__tag{ margin:0 0 .7em; font-family:var(--latin); font-style:italic; font-size:.84rem; letter-spacing:.16em; color:var(--brass-lt); }
+.drop__t{ margin:0 0 .6em; font-size:clamp(1.3rem,3vw,1.9rem); font-weight:700; letter-spacing:.08em; color:var(--paper); }
+.drop__p{ margin:0 0 1.2em; font-size:.93rem; line-height:2; color:rgba(233,237,228,.72); max-width:64ch; }
+.drop__p b{ color:var(--brass-lt); font-weight:400; font-family:var(--latin); font-style:italic; }
+.link--inv{ color:var(--brass-lt); border-bottom-color:rgba(201,169,97,.4); }
+.link--inv:hover{ color:var(--paper); border-color:var(--paper); }
+
 /* ── visit ─────────────────────────────────────────────────────────────── */
 .info{
   display:grid; grid-template-columns:repeat(4,1fr);

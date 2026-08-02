@@ -75,6 +75,12 @@ assets/img/           # 放真實相片嘅位（見下）
 菜式價格（麻辣西瓜 $48、串燒牛舌芯 $78、焦糖牛油燒粟米 $52、五香薰衣草乳鴿 $128）
 來自食客分享，可能已經過時。**上線前建議搵店方核對一次價錢同菜單。**
 
+「新企劃」teaser 出自 2026-06-09 嘅 IG 帖
+（[DZXlpymgneu](https://www.instagram.com/p/DZXlpymgneu/)，caption：`The new plan is in process.🔥👕🐉🐅`，
+tag 咗 @gro_grocery / @59tattoo / @pakkhei / @studio8ight / @gudiii）。
+帖文只係放風，冇公佈產品、價錢或日期——所以網站上亦都只寫到咁上下。
+一有正式公佈，就更新 `.drop` 嗰段。
+
 ---
 
 ## 加真實相片
