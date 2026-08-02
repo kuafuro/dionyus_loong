@@ -23,7 +23,7 @@ npx serve .          # 或 python3 -m http.server 8000
 index.html            # 全部內容（單頁）
 assets/css/style.css  # 全部樣式
 assets/js/main.js     # sticky nav、手機選單、scroll reveal、active link
-assets/img/           # 放真實相片嘅位（見下）
+assets/img/           # logo、門面、場景、周邊相（見下）
 ```
 
 ---
@@ -54,7 +54,8 @@ assets/img/           # 放真實相片嘅位（見下）
 暖色 editorial 排版：巨型標題、幼線分隔、編號索引式餐牌、深綠色區塊做節奏對比、
 跑馬燈 band、六格資料 tile。深綠／淺綠交替，避免成頁一種調子。
 
-門面插畫（洗石米牆、綠摺門、金字招牌、木凳、龍虎圓章）係純 CSS 砌，冇用圖片。
+門面本來係純 CSS 砌嘅插畫（洗石米牆、綠摺門、金字招牌、木凳、龍虎圓章），
+而家已換上真相；相一旦缺失，插畫會自動頂上。
 
 ---
 
@@ -83,29 +84,26 @@ tag 咗 @gro_grocery / @59tattoo / @pakkhei / @studio8ight / @gudiii）。
 
 ---
 
-## 放真 logo（最緊要嗰步）
+## Logo
 
 品牌 logo 係傳統刺青風嘅圓形構圖——左邊金黃老虎配紅火焰，右邊綠龍配藍雲黃爪，
-中間「酒」「詩」兩隻黑字。
+中間「酒」「詩」兩隻黑字。已經放喺 `assets/img/logo.jpg`，出現喺導航列、
+門面玻璃貼紙同周邊格三個位。
 
-**做法：將 logo 存成 `assets/img/logo.png`（正方形，建議 800×800 以上，白底或透明底），
-係咁多。** 唔使改任何 code。
-
-網站有三個位會自動用返佢：導航列、門面插畫塊玻璃上嘅圓形貼紙、周邊 T 恤嗰格。
-每個位都寫成：
+每個位都寫成呢個樣，底下有 CSS 圓章做 fallback：
 
 ```html
 <span class="logo logo--nav">
   <i>酒</i><i>詩</i>                                   <!-- fallback -->
-  <img src="assets/img/logo.png" alt="" onerror="this.remove()">
+  <img src="assets/img/logo.jpg" alt="" onerror="this.remove()">
 </span>
 ```
 
-未放檔案之前（或者檔案壞咗），`onerror` 會將 `<img>` 移走，剩返底層嘅 CSS 圓章
-（米白底、朱紅圈、酒／詩直排），所以幾時都唔會出現爛圖 icon。朱紅圈係 `.logo::after`
-畫喺最面，所以有冇真 logo 都見到，同 IG 頭像個圈一致。
+檔案一旦缺失或壞咗，`onerror` 會將 `<img>` 移走，剩返米白底、朱紅圈、酒／詩直排嘅
+CSS 圓章，唔會出現爛圖 icon。朱紅圈係 `.logo::after` 畫喺最面，所以有冇真 logo
+都見到，同 IG 頭像個圈一致。
 
-logo 隻色其實已經入咗色板：`--seal` 朱紅（火焰）、`--tiger` 金黃（虎）、
+logo 隻色亦係成個網站色板嘅來源：`--seal` 朱紅（火焰）、`--tiger` 金黃（虎）、
 `--door` 綠（龍身）、`--cloud` 天藍（祥雲，用喺 teaser 個圓框）。
 
 ---
@@ -114,18 +112,23 @@ logo 隻色其實已經入咗色板：`--seal` 朱紅（火焰）、`--tiger` �
 
 **唔使改任何 code。**用返以下檔名放入 `assets/img/`，網站會自動用：
 
-| 檔名 | 出現喺邊 | 建議尺寸 |
+| 檔名 | 出現喺邊 | 而家用緊 |
 |---|---|---|
-| `logo.png` | 導航列、門面玻璃貼紙、周邊格 | 正方形 800×800 以上 |
-| `storefront.jpg` | 首頁門面（取代 CSS 插畫） | 橫向 1600×1000 |
-| `scene-1.jpg` `scene-2.jpg` `scene-3.jpg` | 跑馬燈背景，三張輪流交叉淡入 | 橫向 1600×900 |
+| `logo.jpg` | 導航列、門面玻璃貼紙、周邊格 | 龍虎圓章 |
+| `storefront.jpg` | 首頁門面（取代 CSS 插畫） | 門面正面，摺門打開 |
+| `scene-1.jpg` | 跑馬燈背景（三張輪流交叉淡入） | 炭爐火焰燒乳鴿 |
+| `scene-2.jpg` | 同上 | 夜晚門面，客人坐門口 |
+| `scene-3.jpg` | 同上 | 煲仔飯爐上冒煙 |
+| `merch-tee.jpg` | 周邊 · T 恤 | 背面龍虎 + 塗鴉牆 |
+| `merch-collab.jpg` | 周邊 · GROCERY 聯乘 | 聯乘門面龍虎壁畫 |
+
+想換相就用同一個檔名覆蓋，唔使改 code。
+
+`assets/img/` 入面仲有 53 張未編排嘅 IG 相（原檔名），暫時冇喺網站出現。
 
 未放之前（或者放錯名、檔案壞咗）：每張相嘅 `onerror` 會將自己移走，
 JS 亦只會喺**真係載入成功**之後先加 `has-photo` / `has-scene` class，
-所以空 `assets/img/` 完全唔會爛版，維持而家嘅 CSS 圖形。
-
-`scene-*.jpg` 一放，跑馬燈個 band 會自動加高、加深色遮罩，變成
-「巨型字疊喺實景相上面」；冇相就係淨色綠底。
+所以空 `assets/img/` 完全唔會爛版，會維持返 CSS 圖形。
 
 ### 點樣放上去
 
@@ -198,7 +201,7 @@ Build command 留空，output directory 填 `/`（root）。
 ## 待辦
 
 - [ ] 同店方核對菜單同價錢
-- [ ] 換上真實門面 / 菜式相片
+- [ ] 將 `assets/img/` 剩低嗰 53 張相編排落餐牌（要逐張認返係邊味菜）
 - [ ] 補 `og:image`
 - [ ] 如要落廣告或分析，加 Plausible / GA
 - [ ] 考慮加 English 版（而家係中文為主、英文做副標）
