@@ -1,8 +1,15 @@
 name: Deploy to GitHub Pages
 
+# Enabling Pages creates the `github-pages` environment, whose deployment
+# branch policy only admits the repository's DEFAULT branch. A run from any
+# other branch is rejected before it reaches a runner. So: listen on both
+# branches we publish, but only actually deploy from whichever one is
+# currently the default — this keeps working if the default is switched.
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+      - claude/jiu-hu-shi-long-website-8q8lxx
   workflow_dispatch:
 
 permissions:
@@ -16,6 +23,7 @@ concurrency:
 
 jobs:
   deploy:
+    if: github.ref_name == github.event.repository.default_branch
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -23,8 +31,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # enablement:true turns Pages on via the API, so the repo does not
-      # need Settings → Pages flipped by hand before the first deploy
+      # enablement:true is a no-op once Pages exists; it only helps on a repo
+      # where the token is allowed to create the Pages site in the first place
       - uses: actions/configure-pages@v5
         with:
           enablement: true
