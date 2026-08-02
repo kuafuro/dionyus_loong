@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-HK">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>搵唔到呢一頁｜酒虎詩龍 Dionysus &amp; Loong</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#e9ede4">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23a02c20'/%3E%3Ctext x='32' y='45' font-size='32' text-anchor='middle' fill='%23f0e9da' font-family='serif'%3E%E8%99%8E%3C/text%3E%3C/svg%3E">
+
+<!-- Styles are inlined on purpose: GitHub Pages serves this file for any
+     missing path, so a relative <link> to assets/ would 404 at depth. -->
+<style>
+  *,*::before,*::after{ box-sizing:border-box; }
+  body{
+    margin:0; min-height:100svh;
+    display:grid; place-items:center; text-align:center;
+    padding:40px 24px;
+    background-color:#e9ede4;
+    background-image:
+      radial-gradient(1.4px 1.4px at 12% 24%, rgba(28,35,29,.14), transparent),
+      radial-gradient(1.1px 1.1px at 38% 62%, rgba(67,104,79,.16), transparent),
+      radial-gradient(1.6px 1.6px at 66% 18%, rgba(28,35,29,.10), transparent),
+      radial-gradient(1.2px 1.2px at 84% 71%, rgba(168,133,63,.20), transparent),
+      radial-gradient(1px 1px at 52% 88%, rgba(28,35,29,.12), transparent);
+    background-size:180px 180px;
+    color:#1c231d;
+    font-family:"Noto Serif TC","Source Han Serif TC","Songti TC","STSong","PingFang TC","Microsoft JhengHei",serif;
+    font-weight:300; line-height:1.9; letter-spacing:.02em;
+  }
+  .mark{
+    width:64px; height:64px; margin:0 auto 30px;
+    display:grid; place-content:center; gap:.1em;
+    border-radius:50%; background:#fbf8f0;
+    box-shadow:inset 0 0 0 1.5px #a02c20;
+  }
+  .mark i{ font-style:normal; font-weight:700; color:#a02c20; font-size:.9rem; line-height:1.1; }
+  .code{
+    font-size:.76rem; letter-spacing:.34em; text-transform:uppercase;
+    color:#a8853f; margin:0 0 18px;
+  }
+  h1{
+    margin:0 0 .5em; font-weight:700; line-height:1.3; letter-spacing:.06em;
+    font-size:clamp(1.9rem,6vw,3.2rem); color:#43684f;
+  }
+  p.say{ margin:0 auto 2em; max-width:34ch; font-size:1rem; color:#5e6b5f; }
+  .cta{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+  a.btn{
+    display:inline-block; padding:14px 30px; border-radius:999px;
+    font-size:.92rem; letter-spacing:.14em; text-decoration:none;
+    background:#43684f; color:#e9ede4; border:1px solid #43684f;
+    transition:background .3s, transform .3s;
+  }
+  a.btn:hover{ background:#2c4636; transform:translateY(-2px); }
+  a.btn.ghost{ background:transparent; color:#43684f; border-color:rgba(28,35,29,.2); }
+  a.btn.ghost:hover{ background:transparent; border-color:#43684f; }
+  .foot{ margin-top:44px; font-size:.8rem; letter-spacing:.06em; color:#8a9489; }
+  @media (prefers-reduced-motion:reduce){ *{ transition:none !important; } }
+</style>
+</head>
+<body>
+  <main>
+    <div class="mark" aria-hidden="true"><i>酒</i><i>詩</i></div>
+    <p class="code">404 — Not found</p>
+    <h1>呢一頁，<br>唔喺度。</h1>
+    <p class="say">可能條 link 舊咗，或者打漏咗字。返去首頁再搵過啦。</p>
+    <div class="cta">
+      <a class="btn" id="home" href="/">返首頁</a>
+      <a class="btn ghost" href="https://api.whatsapp.com/send?phone=85265875174" target="_blank" rel="noopener">WhatsApp 訂座</a>
+    </div>
+    <p class="foot">酒虎詩龍 Dionysus &amp; Loong · 天后清風街1-3號地下 · 6587 5174</p>
+  </main>
+
+<script>
+  /* On a github.io project site the home page lives under /<repo>/, not /. */
+  (function () {
+    var seg = location.pathname.split('/')[1];
+    if (/\.github\.io$/i.test(location.hostname) && seg) {
+      document.getElementById('home').setAttribute('href', '/' + seg + '/');
+    }
+  })();
+</script>
+</body>
+</html>
