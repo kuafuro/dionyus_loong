@@ -17,8 +17,12 @@ permissions:
   pages: write
   id-token: write
 
+# Keyed by branch on purpose. Both published branches trigger a run, but only
+# the default-branch one gets past the `if` below. A shared group would let the
+# skipped run cancel the deploying one mid-flight (cancel-in-progress), which is
+# exactly what happened on run #5.
 concurrency:
-  group: pages
+  group: pages-${{ github.ref_name }}
   cancel-in-progress: true
 
 jobs:
