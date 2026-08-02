@@ -48,13 +48,13 @@
 
   /* ── scroll reveal + child stagger ─────────────────────────────────── */
   var REVEAL = [
-    '.sec .kicker', '.split', '.stats', '.course',
-    '.secret', '.note', '.tiles', '.cards', '.inline-cta',
+    '.sec .kicker', '.split', '.stats', '.bill__g',
+    '.note', '.tiles', '.cards', '.inline-cta',
     '.merch__item', '.drop', '.info', '.cta__in', '.foot__top'
   ].join(',');
 
   var STAGGER = [
-    '.stats > li', '.list > .row', '.tiles > .tile', '.cards > .card',
+    '.stats > li', '.bill__l > li', '.tiles > .tile', '.cards > .card',
     '.info > .info__card', '.tags > span', '.ticks > li'
   ].join(',');
 

@@ -413,47 +413,35 @@ table{ border-collapse:collapse; width:100%; }
 .stats b{ display:block; margin-top:12px; font-size:clamp(1.2rem,2.6vw,1.6rem); font-weight:500; letter-spacing:.04em; color:var(--door); }
 .stats span{ display:block; margin-top:7px; font-size:.8rem; letter-spacing:.18em; color:var(--faint); }
 
-/* ── menu list ─────────────────────────────────────────────────────────── */
-.course{ margin-top:clamp(44px,6vw,76px); }
-.course__t{
-  display:flex; align-items:baseline; gap:14px;
-  font-size:1.02rem; letter-spacing:.24em; color:var(--ink);
-  padding-bottom:14px; border-bottom:1px solid var(--line);
+/* ── menu — set like the printed bill: name, dot leader, price ─────────── */
+.bill{
+  margin-top:clamp(46px,6vw,80px);
+  columns:2; column-gap:clamp(34px,6vw,92px);
 }
-.course__t i{
-  font-style:normal; width:30px; height:30px; flex:none;
-  display:grid; place-items:center; align-self:center;
-  font-size:.8rem; letter-spacing:0; color:var(--paper); background:var(--door);
-  border-radius:50%;
+.bill__g{ break-inside:avoid; margin-bottom:clamp(32px,4vw,50px); }
+.bill__t{
+  font-size:1.04rem; letter-spacing:.3em; color:var(--door);
+  padding-bottom:12px; margin-bottom:10px;
+  border-bottom:1px solid var(--line);
 }
-.course__t em{ font-family:var(--latin); font-style:italic; font-size:.86rem; letter-spacing:.08em; color:var(--faint); margin-left:auto; }
-
-.list{ margin-top:4px; }
-.row{
-  display:grid;
-  grid-template-columns:52px minmax(190px,.9fr) minmax(0,1.5fr) 108px;
-  gap:clamp(14px,2.4vw,32px); align-items:baseline;
-  padding:24px 12px; margin-inline:-12px;
-  border-bottom:1px solid var(--line-2);
-  transition:background .3s var(--ease);
+.bill__l li{
+  display:flex; align-items:baseline;
+  padding:9px 0; font-size:.97rem; color:var(--ink);
 }
-.row:hover{ background:rgba(207,216,203,.42); }
-.row__no{ font-family:var(--latin); font-size:.86rem; letter-spacing:.1em; color:var(--brass); }
-.row__main h4{ font-size:1.1rem; font-weight:500; letter-spacing:.06em; color:var(--ink); }
-.row__en{ margin:.3em 0 0; font-family:var(--latin); font-style:italic; font-size:.88rem; letter-spacing:.05em; color:var(--door-lt); }
-.row__desc{ margin:0; font-size:.9rem; line-height:1.95; color:var(--muted); }
-.row__price{ font-family:var(--latin); font-size:1rem; letter-spacing:.06em; color:var(--door); text-align:right; white-space:nowrap; }
-
-.secret{
-  margin-top:clamp(34px,4vw,50px); padding:30px 34px;
-  border:1px solid var(--door); border-radius:4px;
-  background:rgba(67,104,79,.06);
+.bill__l li > span{ order:1; }
+.bill__l li > b{
+  order:3; font-weight:400; font-family:var(--latin);
+  font-size:1.04rem; letter-spacing:.04em; color:var(--door); white-space:nowrap;
 }
-.secret__t{ margin-bottom:.35em; font-family:var(--latin); font-style:italic; font-size:1.2rem; letter-spacing:.12em; color:var(--door); }
-.secret p:last-child{ margin:0; font-size:.92rem; color:var(--muted); }
-
-.note{ margin-top:30px; font-size:.8rem; line-height:1.9; letter-spacing:.05em; color:var(--faint); text-align:center; }
-.note--left{ text-align:left; margin-top:16px; }
+.bill__l li > b em{
+  font-family:var(--serif); font-style:normal;
+  font-size:.78rem; letter-spacing:.06em; color:var(--muted);
+}
+.bill__l li::before{
+  content:""; order:2; flex:1 1 auto;
+  margin:0 10px .38em;
+  border-bottom:1px dotted rgba(28,35,29,.3);
+}
 
 /* ── space tiles ───────────────────────────────────────────────────────── */
 .tiles{
@@ -693,10 +681,6 @@ table{ border-collapse:collapse; width:100%; }
 /* ── micro-interactions ────────────────────────────────────────────────── */
 .marquee:hover .marquee__track{ animation-play-state:paused; }
 
-.row__price{ transition:transform .35s var(--ease); }
-.row:hover .row__price{ transform:translateX(-4px); }
-.row__main{ transition:transform .35s var(--ease); }
-.row:hover .row__main{ transform:translateX(4px); }
 
 /* facade drifts a touch slower than the page */
 .storefront{ will-change:transform; }
@@ -718,8 +702,6 @@ table{ border-collapse:collapse; width:100%; }
 
 /* ── responsive ────────────────────────────────────────────────────────── */
 @media (max-width:1080px){
-  .row{ grid-template-columns:44px minmax(170px,1fr) 100px; }
-  .row__desc{ grid-column:2 / -1; margin-top:.6em; }
   .stats,.info{ grid-template-columns:1fr 1fr; }
   .stats li:nth-child(odd),.info__card:nth-child(odd){ border-left:none; }
   .stats li:nth-child(even),.info__card:nth-child(even){ border-left:1px solid var(--line); }
@@ -729,6 +711,7 @@ table{ border-collapse:collapse; width:100%; }
 }
 
 @media (max-width:900px){
+  .bill{ columns:1; }
   .split{ grid-template-columns:1fr; gap:22px; }
   .cards{ grid-template-columns:1fr; }
   .card + .card{ border-left:none; }
@@ -755,9 +738,6 @@ table{ border-collapse:collapse; width:100%; }
 @media (max-width:600px){
   .hero__title{ font-size:clamp(3.6rem,21vw,7rem); }
   .hero__poem{ width:100%; order:3; }
-  .row{ grid-template-columns:38px 1fr; }
-  .row__price{ grid-column:2; text-align:left; margin-top:.5em; }
-  .row__desc{ grid-column:2; }
   .stats,.info,.tiles{ grid-template-columns:1fr; }
   .stats li + li,.info__card + .info__card,
   .stats li:nth-child(even),.info__card:nth-child(even){ border-left:none; }
