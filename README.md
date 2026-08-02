@@ -83,6 +83,33 @@ tag 咗 @gro_grocery / @59tattoo / @pakkhei / @studio8ight / @gudiii）。
 
 ---
 
+## 放真 logo（最緊要嗰步）
+
+品牌 logo 係傳統刺青風嘅圓形構圖——左邊金黃老虎配紅火焰，右邊綠龍配藍雲黃爪，
+中間「酒」「詩」兩隻黑字。
+
+**做法：將 logo 存成 `assets/img/logo.png`（正方形，建議 800×800 以上，白底或透明底），
+係咁多。** 唔使改任何 code。
+
+網站有三個位會自動用返佢：導航列、門面插畫塊玻璃上嘅圓形貼紙、周邊 T 恤嗰格。
+每個位都寫成：
+
+```html
+<span class="logo logo--nav">
+  <i>酒</i><i>詩</i>                                   <!-- fallback -->
+  <img src="assets/img/logo.png" alt="" onerror="this.remove()">
+</span>
+```
+
+未放檔案之前（或者檔案壞咗），`onerror` 會將 `<img>` 移走，剩返底層嘅 CSS 圓章
+（米白底、朱紅圈、酒／詩直排），所以幾時都唔會出現爛圖 icon。朱紅圈係 `.logo::after`
+畫喺最面，所以有冇真 logo 都見到，同 IG 頭像個圈一致。
+
+logo 隻色其實已經入咗色板：`--seal` 朱紅（火焰）、`--tiger` 金黃（虎）、
+`--door` 綠（龍身）、`--cloud` 天藍（祥雲，用喺 teaser 個圓框）。
+
+---
+
 ## 加真實相片
 
 而家全站零圖片（純 CSS 圖形），load 得好快。想換返真相片：
