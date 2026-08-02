@@ -126,10 +126,30 @@ logo 隻色其實已經入咗色板：`--seal` 朱紅（火焰）、`--tiger` �
 
 ## 部署
 
-### GitHub Pages
+### GitHub Pages（現行）
 
-Repo Settings → Pages → Source 揀 **GitHub Actions**。
-`.github/workflows/pages.yml` 已經設定好，push 上 `main` 就會自動部署。
+網站已上線：<https://kuafuro.github.io/dionyus_loong/>
+
+Settings → Pages 設定為 **Deploy from a branch**，branch `claude/jiu-hu-shi-long-website-8q8lxx`、
+folder `/ (root)`。純靜態站冇 build step，所以唔需要 Actions workflow —— push 上嗰條 branch
+GitHub 就會自動重新發佈。
+
+`.nojekyll` 係必需嘅：branch 模式預設會行 Jekyll，而 Jekyll 會略過 `_` 開頭嘅檔案同目錄。
+有咗佢就原檔照 copy，唔會有意外。
+
+> **轉 default branch 要注意**：Pages 個 source branch 係獨立設定，唔會跟住 default branch 走。
+> 如果將來將 default 轉做 `main`，記得同時去 Settings → Pages 將 branch 都改做 `main`，
+> 否則網站會繼續由舊 branch 發佈。
+
+### 自訂域名
+
+域名**唔可以有底線**（ICANN 只准英文字母、數字、連字號），所以 `dionyus_loong.com`
+一類寫法係無效嘅。買個合法域名（例如 `dionysus-loong.com`）之後：
+
+1. Settings → Pages → Custom domain 填域名
+2. DNS 加 A record 指向 `185.199.108.153`、`185.199.109.153`、`185.199.110.153`、`185.199.111.153`
+   （或者 `www` 用 CNAME 指向 `kuafuro.github.io`）
+3. 等 DNS check 綠燈，再剔 **Enforce HTTPS**
 
 ### Cloudflare Pages / Netlify
 
