@@ -110,17 +110,55 @@ logo 隻色其實已經入咗色板：`--seal` 朱紅（火焰）、`--tiger` �
 
 ---
 
-## 加真實相片
+## 加相片
 
-而家全站零圖片（純 CSS 圖形），load 得好快。想換返真相片：
+**唔使改任何 code。**用返以下檔名放入 `assets/img/`，網站會自動用：
 
-1. 相片放入 `assets/img/`（建議 WebP，寬度 1600px 以內）
-2. 門面插畫：將 `index.html` 入面成個 `<div class="storefront">` 換成
-   ```html
-   <img src="assets/img/storefront.webp" alt="酒虎詩龍門面" loading="lazy">
-   ```
-3. 菜式相：喺 `.row` 加 `<img>`，或者改用 grid card 版面
-4. 記得加 `<meta property="og:image">` 指向一張分享用嘅相（1200×630）
+| 檔名 | 出現喺邊 | 建議尺寸 |
+|---|---|---|
+| `logo.png` | 導航列、門面玻璃貼紙、周邊格 | 正方形 800×800 以上 |
+| `storefront.jpg` | 首頁門面（取代 CSS 插畫） | 橫向 1600×1000 |
+| `scene-1.jpg` `scene-2.jpg` `scene-3.jpg` | 跑馬燈背景，三張輪流交叉淡入 | 橫向 1600×900 |
+
+未放之前（或者放錯名、檔案壞咗）：每張相嘅 `onerror` 會將自己移走，
+JS 亦只會喺**真係載入成功**之後先加 `has-photo` / `has-scene` class，
+所以空 `assets/img/` 完全唔會爛版，維持而家嘅 CSS 圖形。
+
+`scene-*.jpg` 一放，跑馬燈個 band 會自動加高、加深色遮罩，變成
+「巨型字疊喺實景相上面」；冇相就係淨色綠底。
+
+### 點樣放上去
+
+**方法一：GitHub 網頁上載（最快，唔使裝嘢）**
+
+1. 開 <https://github.com/kuafuro/dionyus_loong/tree/claude/jiu-hu-shi-long-website-8q8lxx/assets/img>
+2. 撳 **Add file → Upload files**
+3. 將相拖入去，**檔名要跟返上面個表**
+4. 撳 **Commit changes**
+
+因為 Pages 係由呢條 branch 直接發佈，commit 完等一兩分鐘就會自動上線。
+
+**方法二：本機 git**
+
+```bash
+git clone https://github.com/kuafuro/dionyus_loong.git
+cd dionyus_loong && git checkout claude/jiu-hu-shi-long-website-8q8lxx
+cp ~/相/門面.jpg assets/img/storefront.jpg
+git add assets/img && git commit -m "Add shop photos" && git push
+```
+
+> 相片喺對話入面貼畀 AI 係入唔到 repo 嘅——一定要經上面其中一個方法上載。
+
+### 影相貼士
+
+橫向、光線夠、唔好用 IG 加咗濾鏡嗰啲。`scene-*` 三張建議一張門面、
+一張炭爐／師傅落貨、一張枱面菜色，睇落先有節奏。上載前壓到 300KB 以內
+（[Squoosh](https://squoosh.app) 好用），唔係手機會 load 得慢。
+
+### 仲想加
+
+- **菜式相**：喺 `.row` 加 `<img>`，或者改用 grid card 版面（要改 code，我可以幫手）
+- **分享預覽圖**：加 `<meta property="og:image" content="https://…/assets/img/og.jpg">`（1200×630）
 
 ---
 

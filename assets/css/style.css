@@ -292,6 +292,13 @@ table{ border-collapse:collapse; width:100%; }
 }
 .storefront__bench::before{ left:12%; }
 .storefront__bench::after{ right:12%; }
+/* real shopfront photo, when one is supplied */
+.canvas__photo{
+  width:100%; max-width:900px; margin-inline:auto;
+  aspect-ratio:16/10; object-fit:cover; border-radius:3px;
+}
+.canvas--front.has-photo .storefront{ display:none; }
+
 .canvas__cap{
   margin:0; padding:20px 0;
   font-size:.78rem; letter-spacing:.24em; color:var(--door-dk);
@@ -300,15 +307,56 @@ table{ border-collapse:collapse; width:100%; }
 
 /* ── marquee ───────────────────────────────────────────────────────────── */
 .marquee{
-  overflow:hidden; background:var(--door); color:var(--paper);
-  padding:15px 0; margin-top:clamp(38px,5vw,64px);
+  position:relative; overflow:hidden;
+  background:var(--door); color:var(--paper);
+  padding:clamp(14px,2.2vw,26px) 0; margin-top:clamp(38px,5vw,64px);
+}
+/* photo backdrop — only claims height once a real photo has loaded */
+.marquee__bg{ position:absolute; inset:0; z-index:0; }
+.marquee__bg img{
+  position:absolute; inset:0; width:100%; height:100%;
+  object-fit:cover; opacity:0;
+}
+.marquee.has-scene{ padding-block:clamp(46px,8vw,110px); }
+.marquee.has-scene .marquee__bg img{ animation:xfade 21s ease-in-out infinite; }
+.marquee.has-scene .marquee__bg img:nth-child(2){ animation-delay:7s; }
+.marquee.has-scene .marquee__bg img:nth-child(3){ animation-delay:14s; }
+@keyframes xfade{
+  0%{ opacity:0 } 5%{ opacity:1 } 30%{ opacity:1 } 35%{ opacity:0 } 100%{ opacity:0 }
+}
+/* scrim keeps the type legible over any photo */
+.marquee.has-scene::after{
+  content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
+  background:linear-gradient(180deg, rgba(30,50,38,.62), rgba(30,50,38,.78));
 }
 .marquee__track{
-  display:flex; align-items:center; gap:26px; width:max-content;
-  animation:slide 34s linear infinite;
+  position:relative; z-index:2;
+  display:flex; align-items:center; gap:clamp(18px,2.8vw,42px); width:max-content;
+  animation:slide 42s linear infinite;
 }
-.marquee__track span{ font-size:.92rem; letter-spacing:.3em; white-space:nowrap; }
-.marquee__track i{ font-style:normal; color:var(--brass-lt); font-size:.7rem; }
+.marquee__track span,
+.marquee__track b{
+  font-size:clamp(1.9rem,6vw,5rem); line-height:1.14;
+  white-space:nowrap;
+}
+.marquee__track span{ font-weight:700; letter-spacing:.06em; }
+.marquee__track b{
+  font-family:var(--latin); font-style:italic; font-weight:400; letter-spacing:.03em;
+  color:var(--paper); opacity:.5;          /* fallback if text-stroke is absent */
+}
+/* the outlined setting — only claim it where the stroke will actually paint,
+   otherwise transparent fill would erase the word entirely */
+@supports ((-webkit-text-stroke: 1px currentColor) or (text-stroke: 1px currentColor)){
+  .marquee__track b{
+    color:transparent; opacity:1;
+    -webkit-text-stroke:1.2px var(--paper);
+    text-stroke:1.2px var(--paper);
+  }
+}
+.marquee__track i{
+  font-style:normal; color:var(--brass-lt);
+  font-size:clamp(.72rem,1.5vw,1.25rem);
+}
 @keyframes slide{ to{ transform:translateX(-50%); } }
 
 /* ── sections ──────────────────────────────────────────────────────────── */
@@ -701,7 +749,7 @@ table{ border-collapse:collapse; width:100%; }
   .stats li + li,.info__card + .info__card,
   .stats li:nth-child(even),.info__card:nth-child(even){ border-left:none; }
   .tile{ border-right:none; }
-  .marquee__track span{ font-size:.84rem; letter-spacing:.24em; }
+  .marquee__track{ gap:16px; }
 }
 
 @media (prefers-reduced-motion:reduce){

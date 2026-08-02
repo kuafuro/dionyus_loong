@@ -162,6 +162,28 @@
   window.addEventListener('resize', onScroll, { passive: true });
   frame();
 
+  /* ── optional photography ──────────────────────────────────────────────
+     Both slots are additive: a photo that 404s removes itself inline, and the
+     class that changes the layout is only applied once one has really loaded,
+     so an empty assets/img/ leaves the CSS artwork exactly as it was.        */
+  function onLoaded(img, apply) {
+    if (!img) return;
+    if (img.complete && img.naturalWidth) apply();
+    else img.addEventListener('load', apply);
+  }
+
+  var front = document.getElementById('front');
+  onLoaded(front && front.querySelector('.canvas__photo'), function () {
+    front.classList.add('has-photo');
+  });
+
+  var marquee = document.getElementById('marquee');
+  if (marquee) {
+    Array.prototype.forEach.call(marquee.querySelectorAll('.marquee__bg img'), function (img) {
+      onLoaded(img, function () { marquee.classList.add('has-scene'); });
+    });
+  }
+
   /* ── footer year ───────────────────────────────────────────────────── */
   var yr = document.getElementById('yr');
   if (yr) yr.textContent = new Date().getFullYear();

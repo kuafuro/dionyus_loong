@@ -80,7 +80,10 @@
       </div>
     </div>
 
-    <div class="canvas canvas--front" aria-label="酒虎詩龍門面：洗石米外牆、綠色摺門、金色立體字招牌">
+    <div class="canvas canvas--front" id="front" aria-label="酒虎詩龍門面：洗石米外牆、綠色摺門、金色立體字招牌">
+      <!-- Drop a real shopfront photo at this path and it replaces the CSS
+           drawing below; until then the drawing stands in. -->
+      <img class="canvas__photo" src="assets/img/storefront.jpg" alt="酒虎詩龍門面" onerror="this.remove()">
       <div class="storefront" aria-hidden="true">
         <div class="storefront__sign"><i>酒</i><i>虎</i><i>詩</i><i>龍</i></div>
         <div class="storefront__shop">
@@ -103,10 +106,21 @@
   </section>
 
   <!-- ─────────── MARQUEE ─────────── -->
-  <div class="marquee" aria-hidden="true">
+  <!-- Name marquee: solid and outlined settings alternate as it travels.
+       Four units so the -50% loop lands seamlessly on a repeat. -->
+  <div class="marquee" id="marquee" aria-hidden="true">
+    <!-- Optional: shop photos crossfading behind the type. Any that are missing
+         remove themselves, and the band falls back to flat green. -->
+    <div class="marquee__bg">
+      <img src="assets/img/scene-1.jpg" alt="" onerror="this.remove()">
+      <img src="assets/img/scene-2.jpg" alt="" onerror="this.remove()">
+      <img src="assets/img/scene-3.jpg" alt="" onerror="this.remove()">
+    </div>
     <div class="marquee__track">
-      <span>炭燒</span><i>✳</i><span>串燒</span><i>✳</i><span>游水海鮮</span><i>✳</i><span>廣東燒味</span><i>✳</i><span>清酒</span><i>✳</i><span>本地手工啤</span><i>✳</i><span>私人派對</span><i>✳</i>
-      <span>炭燒</span><i>✳</i><span>串燒</span><i>✳</i><span>游水海鮮</span><i>✳</i><span>廣東燒味</span><i>✳</i><span>清酒</span><i>✳</i><span>本地手工啤</span><i>✳</i><span>私人派對</span><i>✳</i>
+      <span>酒虎詩龍</span><i>✳</i><b>Dionysus &amp; Loong</b><i>✳</i>
+      <span>酒虎詩龍</span><i>✳</i><b>Dionysus &amp; Loong</b><i>✳</i>
+      <span>酒虎詩龍</span><i>✳</i><b>Dionysus &amp; Loong</b><i>✳</i>
+      <span>酒虎詩龍</span><i>✳</i><b>Dionysus &amp; Loong</b><i>✳</i>
     </div>
   </div>
 
