@@ -222,6 +222,109 @@
     });
   }
 
+  /* ── gallery — CoverFlow ───────────────────────────────────────────────
+     Cards are laid out purely from their offset to the active index. Only a
+     window of them ever gets a src, so the 34 photos cost nothing until this
+     section is actually reached.                                            */
+  var flow = document.getElementById('flow');
+  if (flow) {
+    var items = [].slice.call(flow.querySelectorAll('.flow__i'));
+    var stage = flow.querySelector('.flow__stage');
+    var readout = document.getElementById('flow-at');
+    var at = 0, LOAD = 4, SHOW = 3, live = false;
+
+    function pad(n) { return (n < 10 ? '0' : '') + n; }
+
+    function hydrate(i) {
+      var el = items[i];
+      if (!live || !el || el.dataset.on) return;
+      el.dataset.on = '1';
+      var img = new Image();
+      img.src = el.dataset.src;
+      img.alt = '';
+      img.loading = 'lazy';
+      el.appendChild(img);
+    }
+
+    var N = items.length;
+    // circular distance, so the fan is symmetric even on the first and last
+    function delta(i) {
+      var d = i - at;
+      if (d >  N / 2) d -= N;
+      if (d < -N / 2) d += N;
+      return d;
+    }
+
+    function layout() {
+      items.forEach(function (el, i) {
+        var d = delta(i);
+        var far = Math.abs(d) > SHOW;
+        el.classList.toggle('is-off', far);
+        el.classList.toggle('is-at', d === 0);
+        if (far) { el.style.transform = 'translate(-50%,-50%) scale(.5)'; el.style.zIndex = 0; return; }
+        var sign = d < 0 ? -1 : 1;
+        var mag = Math.abs(d);
+        // first neighbour steps out furthest; the rest tuck in behind it
+        var x = sign * (mag === 0 ? 0 : 46 + (mag - 1) * 26);
+        var scale = mag === 0 ? 1 : Math.max(0.62, 0.84 - (mag - 1) * 0.1);
+        var rot = mag === 0 ? 0 : -sign * (34 + (mag - 1) * 4);
+        el.style.transform =
+          'translate(-50%,-50%) translateX(' + x + '%) scale(' + scale.toFixed(3) +
+          ') rotateY(' + rot + 'deg)';
+        el.style.zIndex = String(50 - mag);
+      });
+      if (readout) readout.textContent = pad(at + 1);
+      for (var k = at - LOAD; k <= at + LOAD; k++) hydrate(((k % N) + N) % N);
+    }
+
+    function go(n) { at = ((n % N) + N) % N; layout(); }
+
+    flow.querySelectorAll('.flow__b').forEach(function (b) {
+      b.addEventListener('click', function () { go(at + Number(b.dataset.dir)); });
+    });
+    items.forEach(function (el, i) {
+      el.addEventListener('click', function () { if (i !== at) go(i); });
+    });
+
+    // drag / swipe — one card per ~90px travelled, applied on release
+    var down = null;
+    stage.addEventListener('pointerdown', function (e) {
+      down = { x: e.clientX, at: at };
+      stage.classList.add('is-drag');
+      stage.setPointerCapture(e.pointerId);
+    });
+    stage.addEventListener('pointermove', function (e) {
+      if (!down) return;
+      var step = Math.round((down.x - e.clientX) / 90);
+      if (step && down.at + step !== at) go(down.at + step);
+    });
+    ['pointerup', 'pointercancel'].forEach(function (ev) {
+      stage.addEventListener(ev, function () { down = null; stage.classList.remove('is-drag'); });
+    });
+
+    // arrow keys, but only while the gallery is the thing on screen
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      var r = flow.getBoundingClientRect();
+      if (r.top > window.innerHeight * 0.6 || r.bottom < window.innerHeight * 0.4) return;
+      e.preventDefault();
+      go(at + (e.key === 'ArrowRight' ? 1 : -1));
+    });
+
+    // hold every fetch until the gallery is actually approaching, so the 34
+    // photos add nothing to the initial load
+    if (hasIO) {
+      new IntersectionObserver(function (es, obs) {
+        if (!es[0].isIntersecting) return;
+        live = true; layout(); obs.disconnect();
+      }, { rootMargin: '600px 0px' }).observe(flow);
+    } else {
+      live = true;
+    }
+
+    layout();
+  }
+
   /* ── footer year ───────────────────────────────────────────────────── */
   var yr = document.getElementById('yr');
   if (yr) yr.textContent = new Date().getFullYear();

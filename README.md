@@ -134,10 +134,20 @@ logo 隻色亦係成個網站色板嘅來源：`--seal` 朱紅（火焰）、`--
 | `scene-3.jpg` | 同上 | 煲仔飯爐上冒煙 |
 | `merch-tee.jpg` | 周邊 · T 恤 | 背面龍虎 + 塗鴉牆 |
 | `merch-collab.jpg` | 周邊 · GROCERY 聯乘 | 聯乘門面龍虎壁畫 |
+| `gallery/g01–g34.jpg` | 相簿 CoverFlow | 34 張菜色／場景 |
 
 想換相就用同一個檔名覆蓋，唔使改 code。
 
-`assets/img/` 入面仲有 53 張未編排嘅 IG 相（原檔名），暫時冇喺網站出現。
+`assets/img/` 仲有 19 張未用嘅原檔（卡通、海報、人像、有字幕嘅 story），冇喺網站出現。
+
+### 相簿 CoverFlow
+
+`.flow` 係手寫嘅，冇用任何 library。卡片位置純粹由「同目前索引嘅環形距離」計出嚟，
+所以第一張同最後一張都一樣係左右對稱。操作：拖拉、左右方向鍵、撳側邊嗰張、前後掣。
+
+**載入策略**：`<figure data-src>` 冇 `<img>`，要等兩個條件先注入 ——
+`IntersectionObserver`（rootMargin 600px）確認相簿接近視野，
+而且索引喺目前位置 ±4 之內。所以首屏 34 張一張都唔會載，行到相簿先載 9 張。
 
 未放之前（或者放錯名、檔案壞咗）：每張相嘅 `onerror` 會將自己移走，
 JS 亦只會喺**真係載入成功**之後先加 `has-photo` / `has-scene` class，
@@ -176,8 +186,9 @@ git add assets/img && git commit -m "Add shop photos" && git push
 
 ### 仲想加
 
-- **菜式相**：喺 `.row` 加 `<img>`，或者改用 grid card 版面（要改 code，我可以幫手）
-- **分享預覽圖**：加 `<meta property="og:image" content="https://…/assets/img/og.jpg">`（1200×630）
+- **餐牌逐味配相**：要先確認邊張相係邊味菜
+- **相簿加相**：`assets/img/gallery/` 加 `gNN.jpg`，同時喺 `index.html` 加一行
+  `<figure class="flow__i" data-src="...">`，再更新總數
 
 ---
 
@@ -217,7 +228,7 @@ Build command 留空，output directory 填 `/`（root）。
 ## 待辦
 
 - [ ] 同店方核對上表六項未確定嘅餐牌字眼／價錢
-- [ ] 將 `assets/img/` 剩低嗰 53 張相編排落餐牌（要逐張認返係邊味菜）
+- [ ] 如要喺餐牌逐味配相，需要逐張認返係邊味菜
 - [ ] 如要落廣告或分析，加 Plausible / GA
 - [ ] 考慮加 English 版（而家係中文為主、英文做副標）
 
