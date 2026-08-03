@@ -184,6 +184,44 @@
     });
   }
 
+  /* ── pointer micro-interactions ────────────────────────────────────────
+     Buttons lean toward the cursor, cards tilt under it. Both are strictly
+     mouse-only: a coarse pointer has no hover to speak of, and the tilt would
+     fight the scroll on touch.                                              */
+  var fine = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  if (fine && !calm) {
+    // magnetic buttons — the -2px is the lift the CSS :hover would have given,
+    // folded in here because an inline transform overrides it
+    Array.prototype.forEach.call(document.querySelectorAll('.btn'), function (el) {
+      var PULL = 0.28, MAX = 9;
+      el.addEventListener('pointermove', function (e) {
+        var r = el.getBoundingClientRect();
+        var dx = (e.clientX - (r.left + r.width / 2)) * PULL;
+        var dy = (e.clientY - (r.top + r.height / 2)) * PULL;
+        dx = Math.max(-MAX, Math.min(MAX, dx));
+        dy = Math.max(-MAX, Math.min(MAX, dy));
+        el.style.transform = 'translate3d(' + dx.toFixed(1) + 'px,' + (dy - 2).toFixed(1) + 'px,0)';
+      });
+      el.addEventListener('pointerleave', function () { el.style.transform = ''; });
+    });
+
+    // tilt cards
+    Array.prototype.forEach.call(document.querySelectorAll('.card, .merch__art'), function (el) {
+      var DEG = 5;
+      el.style.transformStyle = 'preserve-3d';
+      el.addEventListener('pointermove', function (e) {
+        var r = el.getBoundingClientRect();
+        var px = (e.clientX - r.left) / r.width - 0.5;
+        var py = (e.clientY - r.top) / r.height - 0.5;
+        el.style.transform =
+          'perspective(900px) rotateY(' + (px * DEG * 2).toFixed(2) + 'deg) rotateX(' +
+          (-py * DEG * 2).toFixed(2) + 'deg)';
+      });
+      el.addEventListener('pointerleave', function () { el.style.transform = ''; });
+    });
+  }
+
   /* ── footer year ───────────────────────────────────────────────────── */
   var yr = document.getElementById('yr');
   if (yr) yr.textContent = new Date().getFullYear();

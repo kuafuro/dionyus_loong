@@ -681,6 +681,11 @@ table{ border-collapse:collapse; width:100%; }
 /* ── micro-interactions ────────────────────────────────────────────────── */
 .marquee:hover .marquee__track{ animation-play-state:paused; }
 
+/* pointer-driven transforms are written inline by JS; these just make the
+   spring-back smooth and keep the compositor informed */
+.btn, .card, .merch__art{ will-change:transform; }
+.card, .merch__art{ transition:transform .45s var(--ease), border-color .32s, background .32s; }
+
 
 /* facade drifts a touch slower than the page */
 .storefront{ will-change:transform; }
