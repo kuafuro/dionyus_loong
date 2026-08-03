@@ -168,8 +168,11 @@ git add assets/img && git commit -m "Add shop photos" && git push
 ### 影相貼士
 
 橫向、光線夠、唔好用 IG 加咗濾鏡嗰啲。`scene-*` 三張建議一張門面、
-一張炭爐／師傅落貨、一張枱面菜色，睇落先有節奏。上載前壓到 300KB 以內
-（[Squoosh](https://squoosh.app) 好用），唔係手機會 load 得慢。
+一張炭爐／師傅落貨、一張枱面菜色，睇落先有節奏。上載前壓到 300KB 以內（[Squoosh](https://squoosh.app) 好用）。
+
+現有七張已經按實際顯示尺寸重新編碼過：logo 500px、周邊 700px、門面 1400px、
+場景 1500–1800px。首次載入由 2,163 KB 減到 865 KB。換新相記得照做，
+唔係手機會 load 得慢。
 
 ### 仲想加
 
@@ -215,7 +218,6 @@ Build command 留空，output directory 填 `/`（root）。
 
 - [ ] 同店方核對上表六項未確定嘅餐牌字眼／價錢
 - [ ] 將 `assets/img/` 剩低嗰 53 張相編排落餐牌（要逐張認返係邊味菜）
-- [ ] 補 `og:image`
 - [ ] 如要落廣告或分析，加 Plausible / GA
 - [ ] 考慮加 English 版（而家係中文為主、英文做副標）
 
